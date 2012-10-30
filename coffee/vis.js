@@ -31,35 +31,103 @@ BubbleChart = (function() {
 
 		var max_amount;
 		this.data = data;
-		this.width = 940;
-		this.height = 600;
+		this.width = 1000;
+		this.height = 750;
 		this.tooltip = CustomTooltip("gates_tooltip", 240);
 		this.center = {
 			x : this.width / 2,
 			y : this.height / 2
 		};
 		this.year_centers = {
-			"2008" : {
-				x : this.width / 3,
-				y : this.height / 2
+			"Office Supplies" : {
+				x : this.width / 6,
+				y : this.height / 5 
 			},
-			"2009" : {
-				x : this.width / 2,
-				y : this.height / 2
+			"Travel" : {
+				x : 2 * this.width / 6,
+				y : this.height / 5
 			},
-			"2010" : {
-				x : 2 * this.width / 3,
-				y : this.height / 2
-			}
-		};
+			"Marketing" : {
+				x : 3 * this.width / 6,
+				y : this.height / 5
+			},
+			"Meetings" : {
+				x : 4* this.width / 6,
+				y : this.height / 5
+			},
+			"Student Court" : {
+				x : 5 * this.width /6 ,
+				y : this.height / 5
+			},
+			"Programming" : {
+				x : this.width / 6,
+				y : 2 * this.height / 5
+			},
+			"Technology" : {
+				x : 2 * this.width / 6,
+				y : 2 * this.height / 5
+			},
+			"Co-Sponsorship" : {
+				x : 3 * this.width / 6,
+				y : 2 * this.height / 5
+			},
+			"Athletics" : {
+				x : 4 * this.width / 6,
+				y : 2 * this.height / 5
+			},
+			"Education" : {
+				x : 5 * this.width / 6,
+				y : 2 * this.height / 5
+			},
+			"Government" : {
+				x : this.width / 6,
+				y : 3 * this.height / 5
+			},
+			"Uptown" : {
+				x : 2 * this.width / 6,
+				y : 3 * this.height / 5
+			},
+			"Sustainability" : {
+				x : 3 * this.width / 6,
+				y : 3 * this.height / 5
+			},
+			"OSGA" : {
+				x : 4 * this.width / 6,
+				y : 3 * this.height / 5
+			},
+			"Career Development" : {
+				x : 5 * this.width / 6,
+				y : 3 * this.height / 5
+			},
+			"Retreats" : {
+				x : this.width / 6,
+				y : 4 * this.height / 5
+			},
+			"Elections" : {
+				x : 2 * this.width / 6,
+				y : 4 * this.height / 5
+			},
+			"Inauguration" : {
+				x : 3 * this.width / 6,
+				y : 4 * this.height / 5
+			},
+			"Conferences" : {
+				x : 4 * this.width / 6,
+				y : 4 * this.height / 5
+			},
+			"FYLP" : {
+				x : 5 * this.width /6,
+				y : 4 * this.height / 5
+			}		};
 		this.layout_gravity = -0.01;
 		this.damper = 0.1;
 		this.vis = null;
 		this.nodes = [];
 		this.force = null;
 		this.circles = null;
-		this.fill_color = d3.scale.ordinal().domain(["Programming", "Co-Sponsorship", "Technology", "Meetings", "Marketing", "Office Supplies", "Travel", "Student Court", "Athletics", "Education", "Government", "Uptown", "Career Development", "Retreats", "Sustainability", "OSGA", "Elections", "Conferences", "Inauguration", "FYLP"]).range(["#2060ff", "#ff0000", "#20bfff", "#55ffff", "#2affff", "#ffff54", "#00cfff", "#ff4d00", "#ffbf00", "#209fff", "#fee090 ", "#d73027", "#4575b4", "#91bfdb", "#aaffff", "#7fffff", "#e0f3f8", "#ff7000", "#fff000", "#ff8a00"]);
 
+		this.fill_color = d3.scale.ordinal().domain(["Programming", "Co-Sponsorship", "Technology", "Meetings", "Marketing", "Office Supplies", "Travel", "Student Court", "Athletics", "Education", "Government", "Uptown", "Career Development", "Retreats", "Sustainability", "OSGA", "Elections", "Conferences", "Inauguration", "FYLP"]).range(["#2060ff", "#ff0000", "#20bfff", "#55ffff", "#2affff", "#ffff54", "#00cfff", "#ff4d00", "#ffbf00", "#209fff", "#fee090 ", "#d73027", "#4575b4", "#91bfdb", "#aaffff", "#7fffff", "#e0f3f8", "#ff7000", "#fff000", "#ff8a00", '#ff0000', '#00ff00']);
+		1
 		max_amount = d3.max(this.data, function(d) {
 			return parseInt(d.total_amount);
 		});
@@ -77,12 +145,13 @@ BubbleChart = (function() {
 				id : d.id,
 				radius : _this.radius_scale(parseInt(d.total_amount)),
 				value : d.total_amount,
-				name : d.grant_title,
-				org : d.organization,
-				group : d.group,
-				year : d.start_year,
-				x : Math.random() * 900,
-				y : Math.random() * 800
+				name : d.name,
+				org : d.category,
+				bill : d.bill,
+	
+				
+				x : Math.random() * 1900,
+				y : Math.random() * 1800
 			};
 			return _this.nodes.push(node);
 		});
@@ -99,9 +168,9 @@ BubbleChart = (function() {
 		});
 		that = this;
 		this.circles.enter().append("circle").attr("r", 0).attr("fill", function(d) {
-			return _this.fill_color(d.group);
+			return _this.fill_color(d.org);
 		}).attr("stroke-width", 2).attr("stroke", function(d) {
-			return d3.rgb(_this.fill_color(d.group)).darker();
+			return d3.rgb(_this.fill_color(d.org)).darker();
 		}).attr("id", function(d) {
 			return "bubble_" + d.id;
 		}).on("mouseover", function(d, i) {
@@ -128,7 +197,7 @@ BubbleChart = (function() {
 			return _this.circles.each(_this.move_towards_center(e.alpha)).attr("cx", function(d) {
 				return d.x;
 			}).attr("cy", function(d) {
-				return d.y;
+				return d.y;
 			});
 		});
 		this.force.start();
@@ -160,24 +229,75 @@ BubbleChart = (function() {
 		var _this = this;
 		return function(d) {
 			var target;
-			target = _this.year_centers[d.year];
+			target = _this.year_centers[d.org];
+			
 			d.x = d.x + (target.x - d.x) * (_this.damper + 0.02) * alpha * 1.1;
 			return d.y = d.y + (target.y - d.y) * (_this.damper + 0.02) * alpha * 1.1;
 		};
 	};
 
 	BubbleChart.prototype.display_years = function() {
-		var years, years_data, years_x, _this = this;
+		var years, years_data, years_x,years_y, _this = this;
 		years_x = {
-			"2008" : 160,
-			"2009" : this.width / 2,
-			"2010" : this.width - 160
+
+			"Office Supplies" : this.width / 6 - 55,
+			"Travel" : 2 * this.width / 6 - 25 ,
+			"Marketing" : 3 * this.width / 6 + 20,
+			"Meetings"  : 4* this.width / 6 + 65,
+			"Student Court"  : 5 * this.width /6 + 85 ,
+			
+			"Programming"  : this.width / 6,
+			"Technology"  : 2 * this.width / 6,
+			"Co-Sponsorship"  : 3 * this.width / 6,
+			"Athletics"  : 4 * this.width / 6,
+			"Education"  : 5 * this.width / 6,
+			
+			"Government"  : this.width / 6,
+			"Uptown"  : 2 * this.width / 6,
+			"Sustainability"  : 3 * this.width / 6,
+			"OSGA"  : 4 * this.width / 6,
+			"Career Development"  : 5 * this.width / 6,
+			
+			"Retreats" : this.width / 6,
+			"Elections" : 2 * this.width / 6,
+			"Inauguration" : 3 * this.width / 6,
+			"Conferences" : 4 * this.width / 6,
+			"FYLP" : 5 * this.width /6	
+
 		};
+		years_y = {
+
+			"Office Supplies" : this.height / 6, 
+			"Travel" : this.height / 6,
+			"Marketing" : this.height / 6,
+			"Meetings" : this.height / 6,
+			"Student Court" : this.height / 6,
+
+						"Programming" : 2 * this.height / 4,
+			"Technology" : 2 * this.height / 4,
+			"Co-Sponsorship" : 2 * this.height / 4,
+			"Athletics" : 2 * this.height / 4,
+			"Education" : 2 * this.height / 4,
+			"Government" : 4.5 * this.height / 6,
+			"Uptown" : 4.5 * this.height / 6,
+			"Sustainability" : 4.5 * this.height / 6,
+			"OSGA" : 4.5 * this.height / 6,
+			"Career Development" :4.5 * this.height / 6,
+			"Retreats" : 4 * this.height / 6,
+			"Elections" : 4 * this.height / 6,
+			"Inauguration" : 4 * this.height / 6,
+			"Conferences" : 4 * this.height / 6,
+			"FYLP": 4 * this.height /6
+			
+		};
+		
 		years_data = d3.keys(years_x);
 		years = this.vis.selectAll(".years").data(years_data);
 		return years.enter().append("text").attr("class", "years").attr("x", function(d) {
 			return years_x[d];
-		}).attr("y", 40).attr("text-anchor", "middle").text(function(d) {
+		}).attr("y", function(d){
+			return years_y[d] + 10;
+		}).attr("text-anchor", "middle").text(function(d) {
 			return d;
 		});
 	};
@@ -190,16 +310,20 @@ BubbleChart = (function() {
 	BubbleChart.prototype.show_details = function(data, i, element) {
 		var content;
 		d3.select(element).attr("stroke", "black");
-		content = "<span class=\"name\">Title:</span><span class=\"value\"> " + data.name + "</span><br/>";
+
+		content = "<span class=\"name\">Name:</span><span class=\"value\"> " + data.name + "</span><br/>";
 		content += "<span class=\"name\">Amount:</span><span class=\"value\"> $" + (addCommas(data.value)) + "</span><br/>";
-		content += "<span class=\"name\">Catagory:</span><span class=\"value\"> " + data.org + "</span>";
+		content += "<span class=\"name\">Category:</span><span class=\"value\"> " + data.org + "</span>"  + "</span><br/>";
+		content += "<span class=\"name\">Type:</span><span class=\"value\"> " + data.bill + "</span>";
+		
+		
 		return this.tooltip.showTooltip(content, d3.event);
 	};
 
 	BubbleChart.prototype.hide_details = function(data, i, element) {
 		var _this = this;
-		return d3.rgb(_this.fill_color(d.org)).darker();
 		d3.select(element).attr("stroke", function(d) {
+			return d3.rgb(_this.fill_color(d.org)).darker();
 		});
 		return this.tooltip.hideTooltip();
 	};
@@ -231,5 +355,5 @@ $(function() {
 			return root.display_all();
 		}
 	};
-	return d3.csv("data/gates_money_edited.csv", render_vis);
+	return d3.csv("data/budget.csv", render_vis);
 }); 
