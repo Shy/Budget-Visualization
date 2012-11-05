@@ -17,11 +17,13 @@ footer {
 
 #view_selection {
   margin-top: 10px;
+  
 }
 
 .years {
-  font-size: 21px;
-  fill: #aaa;
+  font-size: 14px;
+  fill: #111;
+  font-family: Monaco;
 }
 
 .tooltip {
@@ -50,3 +52,10 @@ footer {
   font-weight:bold;
 }
 
+.tooltip .head {
+  font-weight:bold;
+  color: black;
+  text-decoration:underline;
+  font-size: 15px;
+  text-align: center;
+}

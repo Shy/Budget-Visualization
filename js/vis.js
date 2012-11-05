@@ -26,13 +26,13 @@ BubbleChart = (function() {
 		this.start = __bind(this.start, this);
 
 		this.create_vis = __bind(this.create_vis, this);
-
+`
 		this.create_nodes = __bind(this.create_nodes, this);
 
 		var max_amount;
 		this.data = data;
-		this.width = 1000;
-		this.height = 750;
+		this.width = window.innerWidth;
+		this.height = window.innerHeight - 100;
 		this.tooltip = CustomTooltip("gates_tooltip", 240);
 		this.center = {
 			x : this.width / 2,
@@ -40,84 +40,84 @@ BubbleChart = (function() {
 		};
 		this.year_centers = {
 			"Office Supplies" : {
-				x : this.width / 6,
-				y : this.height / 5 
+				x : this.width * 4/20,
+				y : this.height * 7/32 
 			},
 			"Travel" : {
-				x : 2 * this.width / 6,
-				y : this.height / 5
-			},
-			"Marketing" : {
-				x : 3 * this.width / 6,
-				y : this.height / 5
-			},
-			"Meetings" : {
-				x : 4* this.width / 6,
-				y : this.height / 5
-			},
-			"Student Court" : {
-				x : 5 * this.width /6 ,
-				y : this.height / 5
-			},
-			"Programming" : {
-				x : this.width / 6,
-				y : 2 * this.height / 5
-			},
-			"Technology" : {
-				x : 2 * this.width / 6,
-				y : 2 * this.height / 5
-			},
-			"Co-Sponsorship" : {
-				x : 3 * this.width / 6,
-				y : 2 * this.height / 5
+				x : this.width * 7/20,
+				y : this.height * 7/32
 			},
 			"Athletics" : {
-				x : 4 * this.width / 6,
-				y : 2 * this.height / 5
+				x : this.width * 1/2,
+				y : this.height * 7/32
 			},
-			"Education" : {
-				x : 5 * this.width / 6,
-				y : 2 * this.height / 5
+			"Meetings" : {
+				x : this.width * 13/20,
+				y : this.height * 7/32
 			},
-			"Government" : {
-				x : this.width / 6,
-				y : 3 * this.height / 5
+			"Student Court" : {
+				x : this.width * 16/20,
+				y : this.height * 7/32
 			},
-			"Uptown" : {
-				x : 2 * this.width / 6,
-				y : 3 * this.height / 5
+			"Marketing" : {
+				x : this.width * 4/20,
+				y : this.height * 6.5/16
 			},
-			"Sustainability" : {
-				x : 3 * this.width / 6,
-				y : 3 * this.height / 5
+			"Technology" : {
+				x : this.width * 7/20,
+				y : this.height * 6.5/16
 			},
-			"OSGA" : {
-				x : 4 * this.width / 6,
-				y : 3 * this.height / 5
+			"Programming" : {
+				x : this.width * 1/2,
+				y : this.height * 6.5/16
 			},
-			"Career Development" : {
-				x : 5 * this.width / 6,
-				y : 3 * this.height / 5
+			"Co-Sponsorship" : {
+				x : this.width * 13/20,
+				y : this.height * 6.5/16
 			},
 			"Retreats" : {
-				x : this.width / 6,
-				y : 4 * this.height / 5
+				x : this.width * 16/20,
+				y : this.height * 6.5/16
+			},
+			"Government" : {
+				x : this.width * 4/20,
+				y : this.height * 9.5/16
+			},
+			"Uptown" : {
+				x : this.width * 7/20,
+				y : this.height * 9.5/16
+			},
+			"Sustainability" : {
+				x : this.width * 1/2,
+				y : this.height * 9.5/16
+			},
+			"OSGA" : {
+				x : this.width * 13/20,
+				y : this.height * 9.5/16
+			},
+			"Career Development" : {
+				x : this.width * 16/20,
+				y : this.height * 9.5/16
+			},
+			"Education" : {
+				x : this.width * 4/20,
+				y : this.height * 13/16
 			},
 			"Elections" : {
-				x : 2 * this.width / 6,
-				y : 4 * this.height / 5
+				x : this.width * 7/20,
+				y : this.height * 13/16
 			},
 			"Inauguration" : {
-				x : 3 * this.width / 6,
-				y : 4 * this.height / 5
+				x : this.width * 1/2,
+				y : this.height * 13/16
 			},
 			"Conferences" : {
-				x : 4 * this.width / 6,
-				y : 4 * this.height / 5
+				x : this.width * 13/20,
+				y : this.height * 13/16
 			},
 			"FYLP" : {
-				x : 5 * this.width /6,
-				y : 4 * this.height / 5
+				x : this.width * 16/20,
+				y : this.height * 13/16
 			}		};
 		this.layout_gravity = -0.01;
 		this.damper = 0.1;
@@ -126,12 +126,14 @@ BubbleChart = (function() {
 		this.force = null;
 		this.circles = null;
 
-		this.fill_color = d3.scale.ordinal().domain(["Programming", "Co-Sponsorship", "Technology", "Meetings", "Marketing", "Office Supplies", "Travel", "Student Court", "Athletics", "Education", "Government", "Uptown", "Career Development", "Retreats", "Sustainability", "OSGA", "Elections", "Conferences", "Inauguration", "FYLP"]).range(["#2060ff", "#ff0000", "#20bfff", "#55ffff", "#2affff", "#ffff54", "#00cfff", "#ff4d00", "#ffbf00", "#209fff", "#fee090 ", "#d73027", "#4575b4", "#91bfdb", "#aaffff", "#7fffff", "#e0f3f8", "#ff7000", "#fff000", "#ff8a00", '#ff0000', '#00ff00']);
-		1
+		this.fill_color = d3.scale.ordinal().domain(["Programming", "Co-Sponsorship", "Technology", "Meetings", "Marketing", "Office Supplies", "Travel", "Student Court", "Athletics", "Education", "Government", "Uptown", "Career Development", "Retreats", "Sustainability", "OSGA", "Elections", "Conferences", "Inauguration", "FYLP"])
+		.range(["#587C0B", "#9FC54Di", "#D0FB74", "#FBC97B", "#DFF2B1", "#073D35", "#0B7C74", "#41DFD3", "#BAE2DC", "#210770", "#6340D3", "#8D79E0", "#AC9ECA", "#701B2D", "#D34265", "#EC869B", "#FCC8D4", "#4B2E01", "#7C5212", "#F9A423"]);
+		
 		max_amount = d3.max(this.data, function(d) {
 			return parseInt(d.total_amount);
 		});
 		this.radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, 85]);
+		
 		this.create_nodes();
 		this.create_vis();
 	}
@@ -141,9 +143,11 @@ BubbleChart = (function() {
 		var _this = this;
 		this.data.forEach(function(d) {
 			var node;
+			
 			node = {
 				id : d.id,
-				radius : _this.radius_scale(parseInt(d.total_amount)),
+				radius : (_this.width*_this.height /630000) * Math.sqrt(d.total_amount/3.14) ,
+
 				value : d.total_amount,
 				name : d.name,
 				org : d.category,
@@ -197,7 +201,8 @@ BubbleChart = (function() {
 			return _this.circles.each(_this.move_towards_center(e.alpha)).attr("cx", function(d) {
 				return d.x;
 			}).attr("cy", function(d) {
-				return d.y;
+				return d.y;
+
 			});
 		});
 		this.force.start();
@@ -240,54 +245,56 @@ BubbleChart = (function() {
 		var years, years_data, years_x,years_y, _this = this;
 		years_x = {
 
-			"Office Supplies" : this.width / 6 - 55,
-			"Travel" : 2 * this.width / 6 - 25 ,
-			"Marketing" : 3 * this.width / 6 + 20,
-			"Meetings"  : 4* this.width / 6 + 65,
-			"Student Court"  : 5 * this.width /6 + 85 ,
+			"Office Supplies" : this.width * 4/20,
+			"Travel" : this.width * 7/20,
+			"Athletics" : this.width * 1/2,
+			"Meetings"  : this.width * 13/20,
+			"Student Court"  : this.width * 16/20,
 			
-			"Programming"  : this.width / 6,
-			"Technology"  : 2 * this.width / 6,
-			"Co-Sponsorship"  : 3 * this.width / 6,
-			"Athletics"  : 4 * this.width / 6,
-			"Education"  : 5 * this.width / 6,
+			"Marketing"  : this.width * 4/20,
+			"Technology"  : this.width * 7/20,
+			"Programming"  : this.width * 1/2,
+			"Co-Sponsorship"  : this.width * 13/20,
+			"Retreats"  : this.width * 16/20,
 			
-			"Government"  : this.width / 6,
-			"Uptown"  : 2 * this.width / 6,
-			"Sustainability"  : 3 * this.width / 6,
-			"OSGA"  : 4 * this.width / 6,
-			"Career Development"  : 5 * this.width / 6,
+			"Government"  : this.width * 4/20,
+			"Uptown"  : this.width * 7/20 ,
+			"Sustainability"  : this.width * 1/2,
+			"OSGA"  : this.width * 13/20,
+			"Career Development"  : this.width * 16/20,
 			
-			"Retreats" : this.width / 6,
-			"Elections" : 2 * this.width / 6,
-			"Inauguration" : 3 * this.width / 6,
-			"Conferences" : 4 * this.width / 6,
-			"FYLP" : 5 * this.width /6	
+			"Education" : this.width * 4/20,
+			"Elections" : this.width * 7/20,
+			"Inauguration" : this.width * 1/2,
+			"Conferences" : this.width * 13/20,
+			"FYLP" : this.width * 16/20	
 
 		};
 		years_y = {
 
-			"Office Supplies" : this.height / 6, 
-			"Travel" : this.height / 6,
-			"Marketing" : this.height / 6,
-			"Meetings" : this.height / 6,
-			"Student Court" : this.height / 6,
+			"Office Supplies" : this.height * 7/32, 
+			"Travel" : this.height * 7/32,
+			"Athletics" : this.height * 7/32,
+			"Meetings" : this.height * 7/32,
+			"Student Court" : this.height * 7/32,
 
-						"Programming" : 2 * this.height / 4,
-			"Technology" : 2 * this.height / 4,
-			"Co-Sponsorship" : 2 * this.height / 4,
-			"Athletics" : 2 * this.height / 4,
-			"Education" : 2 * this.height / 4,
-			"Government" : 4.5 * this.height / 6,
-			"Uptown" : 4.5 * this.height / 6,
-			"Sustainability" : 4.5 * this.height / 6,
-			"OSGA" : 4.5 * this.height / 6,
-			"Career Development" :4.5 * this.height / 6,
-			"Retreats" : 4 * this.height / 6,
-			"Elections" : 4 * this.height / 6,
-			"Inauguration" : 4 * this.height / 6,
-			"Conferences" : 4 * this.height / 6,
-			"FYLP": 4 * this.height /6
+			"Marketing" : this.height * 17/32,
+			"Technology" : this.height * 17/32,
+			"Programming" : this.height * 17/32,
+			"Co-Sponsorship" : this.height * 17/32,
+			"Retreats" : this.height * 17/32,
+			
+			"Government" : this.height * 24/32,
+			"Uptown" : this.height * 24/32,
+			"Sustainability" : this.height * 24/32,
+			"OSGA" : this.height * 24/32,
+			"Career Development" : this.height * 24/32,
+			
+			"Education" : this.height * 31/32,
+			"Elections" : this.height * 31/32,
+			"Inauguration" : this.height * 31/32,
+			"Conferences" : this.height * 31/32,
+			"FYLP": this.height * 31/32
 			
 		};
 		
@@ -311,13 +318,14 @@ BubbleChart = (function() {
 		var content;
 		d3.select(element).attr("stroke", "black");
 
-		content = "<span class=\"name\">Name:</span><span class=\"value\"> " + data.name + "</span><br/>";
+		content = "<h6 class=\"head\"> " + data.name + "</h6><br/>";
 		content += "<span class=\"name\">Amount:</span><span class=\"value\"> $" + (addCommas(data.value)) + "</span><br/>";
-		content += "<span class=\"name\">Category:</span><span class=\"value\"> " + data.org + "</span>"  + "</span><br/>";
+		content += "<span class=\"name\">Line Item:</span><span class=\"value\"> " + data.org + "</span>"  + "</span><br/>";
 		content += "<span class=\"name\">Type:</span><span class=\"value\"> " + data.bill + "</span>";
 		
 		
-		return this.tooltip.showTooltip(content, d3.event);
+		return this.tooltip.showTooltip(content, d3.event);
+
 	};
 
 	BubbleChart.prototype.hide_details = function(data, i, element) {
